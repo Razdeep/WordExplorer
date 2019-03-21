@@ -1,0 +1,22 @@
+{
+  "name": "wordexplorer",
+  "version": "1.0.0",
+  "description": "An Alexa Skill",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Razdeep/WordExplorer.git"
+  },
+  "author": "Rajdeep Roy Chowdhury",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Razdeep/WordExplorer/issues"
+  },
+  "homepage": "https://github.com/Razdeep/WordExplorer#readme",
+  "dependencies": {
+    "alexa-sdk": "^1.0.25"
+  }
+}
