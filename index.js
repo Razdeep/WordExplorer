@@ -1,5 +1,14 @@
 // My imports
 const fs = require('fs');
+function spell(word)
+{
+    result = '';
+    for(i in word)
+    {
+        result = result + i + " ";
+    }
+    return result;
+}
 
 let speechOutput;
 let reprompt;
@@ -11,7 +20,7 @@ let instructions =
 
 let welcomeOutput = 'Welcome to Word Explorer, ' + instructions;
 
-let welcomeReprompt = "Sorry I didn't get you. ";
+let welcomeReprompt = "Sorry I didn't get you. " + instructions;
 
 ('use strict');
 const Alexa = require('alexa-sdk');
@@ -50,9 +59,13 @@ const handlers = {
 	},
 	GetWord: function() {
 		speechOutput = '';
-		wordList = fs.readFileSync('words.txt');
-		
-		speechOutput = 'The total number of words read is ' + wordList.length.toString() + '. Anything else?';
+		wordList = fs.readFileSync('words.txt').toString().split("\n");
+        word_list_length = wordList.length;
+        generated_index = Math.floor(Math.random() * 10000000) % word_list_length;
+        console.log("RRC Index " + generated_index);
+        // console.log(wordList);
+        random_word = wordList[generated_index];
+		speechOutput = 'Chosen random word is '+ random_word.toUpperCase();
 		this.emit(':ask', speechOutput, speechOutput);
 	},
 	SpellingIntent: function() {
