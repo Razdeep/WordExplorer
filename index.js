@@ -3,9 +3,9 @@ const fs = require('fs');
 function spell(word)
 {
     result = '';
-    for(i in word)
+    for(index in word)
     {
-        result = result + i + " ";
+        result = result + word[index] + "<break time ='0.5s'/> ";
     }
     return result;
 }
@@ -62,10 +62,12 @@ const handlers = {
 		wordList = fs.readFileSync('words.txt').toString().split("\n");
         word_list_length = wordList.length;
         generated_index = Math.floor(Math.random() * 10000000) % word_list_length;
-        console.log("RRC Index " + generated_index);
+        // console.log("RRC Index " + generated_index);
         // console.log(wordList);
-        random_word = wordList[generated_index];
-		speechOutput = 'Chosen random word is '+ random_word.toUpperCase();
+        random_word = wordList[generated_index].toUpperCase();
+		speechOutput = 'Chosen random word is '+ random_word
+						+ '<break time="1s" /> The spelling of ' + random_word 
+						+ ' is ' + spell(random_word);
 		this.emit(':ask', speechOutput, speechOutput);
 	},
 	SpellingIntent: function() {
@@ -76,11 +78,11 @@ const handlers = {
 		let wordSlotRaw = this.event.request.intent.slots.word.value;
 		console.log(wordSlotRaw);
 		let wordSlot = resolveCanonical(this.event.request.intent.slots.word);
-		console.log(wordSlot);
+		console.log(wordSlot); 
 
 		//Your custom intent handling goes here
 		speechOutput =
-			'This is a place holder response for the intent named SpellingIntent. This intent has one slot, which is word. Anything else?';
+			'The spelling of ' + wordSlot + ' is ' + spell(wordSlot) + '<break time="1s" /> Anything else?';
 		this.emit(':ask', speechOutput, speechOutput);
 	},
 	AboutIntent: function() {
