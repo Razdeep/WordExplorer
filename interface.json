@@ -1,0 +1,71 @@
+{
+    "interactionModel": {
+        "languageModel": {
+            "invocationName": "word explorer",
+            "intents": [
+                {
+                    "name": "AMAZON.CancelIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.HelpIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.StopIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.NavigateHomeIntent",
+                    "samples": []
+                },
+                {
+                    "name": "GetWord",
+                    "slots": [],
+                    "samples": [
+                        "new word",
+                        "a new word",
+                        "tell me a word",
+                        "tell me a new word",
+                        "word",
+                        "give me a word",
+                        "tell me new word",
+                        "word please",
+                        "give me word",
+                        "give me english word",
+                        "give me some information",
+                        "give me some space information",
+                        "tell me something",
+                        "give me something"
+                    ]
+                },
+                {
+                    "name": "SpellingIntent",
+                    "slots": [
+                        {
+                            "name": "word",
+                            "type": "AMAZON.FirstName"
+                        }
+                    ],
+                    "samples": [
+                        "Spelling of {word}",
+                        "How do you spell {word}",
+                        "What is the spelling of {word} "
+                    ]
+                },
+                {
+                    "name": "AboutIntent",
+                    "slots": [],
+                    "samples": [
+                        "Developer information",
+                        "Who is the developer",
+                        "Who created you",
+                        "Developer Info",
+                        "Tell me about the developer"
+                    ]
+                }
+            ],
+            "types": []
+        }
+    }
+}
