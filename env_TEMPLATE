@@ -1,1 +1,2 @@
-OXFORD_DICTIONARIES_API_KEY = "<PutYourKeyHereWithoutIncludingTheAngularBrackets>"
+OXFORD_DICTIONARIES_API_ID = "<PutYourIdHereExcludingTheAngularBrackets>"
+OXFORD_DICTIONARIES_API_KEY = "<PutYourKeyHereExcludingTheAngularBrackets>"

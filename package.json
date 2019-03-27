@@ -18,6 +18,7 @@
   "homepage": "https://github.com/Razdeep/WordExplorer#readme",
   "dependencies": {
     "alexa-sdk": "^1.0.25",
-    "dotenv": "^7.0.0"
+    "dotenv": "^7.0.0",
+    "oxford-dictionary": "^1.4.1"
   }
 }
