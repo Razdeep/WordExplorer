@@ -1,4 +1,7 @@
 // My imports
+// API URL https://googledictionaryapi.eu-gb.mybluemix.net/?define=WORD&lang=en
+
+require('dotenv').config()
 const fs = require('fs');
 function spell(word)
 {
