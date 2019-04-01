@@ -1,16 +1,13 @@
-// My imports
-
 require('dotenv').config();
 const fs = require('fs');
 const Dictionary = require('oxford-dictionary');
-console.log("RRC API ID " + process.env.OXFORD_DICTIONARIES_API_ID);
-console.log("RRC API KEY " + process.env.OXFORD_DICTIONARIES_API_KEY);
+
 var config = {
 	app_id: process.env.OXFORD_DICTIONARIES_API_ID,
 	app_key: process.env.OXFORD_DICTIONARIES_API_KEY,
 	source_lang: "en"
 };
-dictionary = new Dictionary(config);
+var dictionary = new Dictionary(config);
 
 function spell(word) {
 	result = '';
@@ -34,59 +31,90 @@ let welcomeReprompt = "Sorry I didn't get you. " + instructions;
 
 ('use strict');
 const Alexa = require('alexa-sdk');
-const APP_ID = undefined; // TODO replace with your app ID (OPTIONAL).
+const APP_ID = "amzn1.ask.skill.685add16-92e2-4e16-9861-0b748627f8e4";
 speechOutput = '';
 const handlers = {
-		LaunchRequest: function () {
-			this.emit(':ask', welcomeOutput, welcomeReprompt);
-		},
-		'AMAZON.HelpIntent': function () {
-			speechOutput = instructions;
-			reprompt = '';
-			this.emit(':ask', speechOutput, reprompt);
-		},
-		'AMAZON.CancelIntent': function () {
-			speechOutput = 'Okay, Cancelling.';
-			this.emit(':tell', speechOutput);
-		},
-		'AMAZON.StopIntent': function () {
-			speechOutput = 'Okay, Stopping.';
-			this.emit(':tell', speechOutput);
-		},
-		SessionEndedRequest: function () {
-			speechOutput = '';
-			//this.emit(':saveState', true);//uncomment to save attributes to db on session end
-			this.emit(':tell', speechOutput);
-		},
-		'AMAZON.NavigateHomeIntent': function () {
-			speechOutput = '';
+	LaunchRequest: function () {
+		this.emit(':ask', welcomeOutput, welcomeReprompt);
+	},
+	'AMAZON.HelpIntent': function () {
+		speechOutput = instructions;
+		reprompt = '';
+		this.emit(':ask', speechOutput, reprompt);
+	},
+	'AMAZON.CancelIntent': function () {
+		speechOutput = 'Okay, Cancelling.';
+		this.emit(':tell', speechOutput);
+	},
+	'AMAZON.StopIntent': function () {
+		speechOutput = 'Okay, Stopping.';
+		this.emit(':tell', speechOutput);
+	},
+	SessionEndedRequest: function () {
+		speechOutput = '';
+		//this.emit(':saveState', true);//uncomment to save attributes to db on session end
+		this.emit(':tell', speechOutput);
+	},
+	'AMAZON.NavigateHomeIntent': function () {
+		speechOutput = '';
 
-			//any intent slot variables are listed here for convenience
+		//any intent slot variables are listed here for convenience
 
-			//Your custom intent handling goes here
-			speechOutput = 'Anything else?';
-			this.emit(':ask', speechOutput, speechOutput);
-		},
-		GetWord: function () {
-			speechOutput = '';
-			wordList = fs.readFileSync('words.txt').toString().split("\n");
-			word_list_length = wordList.length;
-			generated_index = Math.floor(Math.random() * 10000000) % word_list_length;
-			// console.log("RRC Index " + generated_index);
-			// console.log(wordList);
-			random_word = wordList[generated_index].toUpperCase();
-			speechOutput = 'Chosen random word is ' + random_word +
-				'<break time="1s" /> The spelling of ' + random_word +
-				' is ' + spell(random_word);
-			
-			// @FIX_THIS
-			dictionary.find(random_word, function (error, data) {
-				console.log("RAJDEEP DEBUG");
-				if (error)
-					console.log(error);
-					// return console.log(error);
-				console.log("Data from dictionary "+data);
-			});
+		//Your custom intent handling goes here
+		speechOutput = 'Anything else?';
+		this.emit(':ask', speechOutput, speechOutput);
+	},
+	GetWord: function () {
+		speechOutput = '';
+
+		// @FIX_THIS
+		// var lookup = dictionary.find("PHILANTHROPIST");
+		// lookup.then(function(result){
+		// 	console.log("Rajdeep DEBUG");
+		// 	console.log(JSON.stringify(result));
+		// 	console.log(result);
+		// }, 
+		// function(err){
+		// 	console.log("Rajdeep ERROR");
+		// 	console.log(err);
+		// });
+		// setTimeout(function() {
+		// 	console.log('Blah blah blah blah extra-blah');
+		// }, 2000);
+		wordList = fs.readFileSync('words.txt').toString().split("\n");
+		word_list_length = wordList.length;
+		generated_index = Math.floor(Math.random() * 10000000) % word_list_length;
+		random_word = wordList[generated_index].toUpperCase();
+		speechOutput = 'Chosen random word is ' + random_word +
+			'<break time="1s" /> The spelling of ' + random_word +
+			' is ' + spell(random_word);
+
+		console.log("RRC API ID " + process.env.OXFORD_DICTIONARIES_API_ID);
+		console.log("RRC API KEY " + process.env.OXFORD_DICTIONARIES_API_KEY);
+		console.log("Hello world");
+
+		// @FIX_THIS
+		function getDefinition() {
+			console.log("Looking for the word "+random_word);
+			var lookup = dictionary.definitions(random_word);
+			lookup.then(function (result) {
+					console.log(result.results.lexicalEntries[0].entries[0].senses.definitions);
+				},
+				function (err) {
+					console.log(err);
+				});
+			console.log("Bye world");
+		}
+		getDefinition();
+
+		function wait() {
+			for (i = 0; i < 10000; i++) {
+				for (j = 0; j < 10000; j++) {
+
+				}
+			}
+		}
+		wait();
 		this.emit(':ask', speechOutput, speechOutput);
 	},
 	SpellingIntent: function () {
