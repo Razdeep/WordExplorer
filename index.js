@@ -39,7 +39,7 @@ const handlers = {
 	},
 	'AMAZON.HelpIntent': function () {
 		speechOutput = instructions;
-		reprompt = '';
+		reprompt = 'Sorry, I didn\'t get you. ' + instructions;
 		this.emit(':ask', speechOutput, reprompt);
 	},
 	'AMAZON.CancelIntent': function () {
