@@ -1,13 +1,6 @@
+const http = require("https");
 require('dotenv').config();
 const fs = require('fs');
-const Dictionary = require('oxford-dictionary');
-
-var config = {
-	app_id: process.env.OXFORD_DICTIONARIES_API_ID,
-	app_key: process.env.OXFORD_DICTIONARIES_API_KEY,
-	source_lang: "en"
-};
-var dictionary = new Dictionary(config);
 
 function spell(word) {
 	result = '';
@@ -66,21 +59,6 @@ const handlers = {
 	},
 	GetWord: function () {
 		speechOutput = '';
-
-		// @FIX_THIS
-		// var lookup = dictionary.find("PHILANTHROPIST");
-		// lookup.then(function(result){
-		// 	console.log("Rajdeep DEBUG");
-		// 	console.log(JSON.stringify(result));
-		// 	console.log(result);
-		// }, 
-		// function(err){
-		// 	console.log("Rajdeep ERROR");
-		// 	console.log(err);
-		// });
-		// setTimeout(function() {
-		// 	console.log('Blah blah blah blah extra-blah');
-		// }, 2000);
 		wordList = fs.readFileSync('words.txt').toString().split("\n");
 		word_list_length = wordList.length;
 		generated_index = Math.floor(Math.random() * 10000000) % word_list_length;
@@ -89,32 +67,35 @@ const handlers = {
 			'<break time="1s" /> The spelling of ' + random_word +
 			' is ' + spell(random_word);
 
-		console.log("RRC API ID " + process.env.OXFORD_DICTIONARIES_API_ID);
-		console.log("RRC API KEY " + process.env.OXFORD_DICTIONARIES_API_KEY);
-		console.log("Hello world");
+		const app_id = process.env.OXFORD_DICTIONARIES_API_ID;
+		const app_key = process.env.OXFORD_DICTIONARIES_API_KEY;
+		const wordId = random_word;
+		const fields = "definitions";
+		const strictMatch = "false";
 
-		// @FIX_THIS
-		function getDefinition() {
-			console.log("Looking for the word "+random_word);
-			var lookup = dictionary.definitions(random_word);
-			lookup.then(function (result) {
-					console.log(result.results.lexicalEntries[0].entries[0].senses.definitions);
-				},
-				function (err) {
-					console.log(err);
-				});
-			console.log("Bye world");
-		}
-		getDefinition();
-
-		function wait() {
-			for (i = 0; i < 10000; i++) {
-				for (j = 0; j < 10000; j++) {
-
-				}
+		const options = {
+			host: 'od-api.oxforddictionaries.com',
+			port: '443',
+			path: '/api/v2/entries/en-us/' + wordId + '?fields=' + fields + '&strictMatch=' + strictMatch,
+			method: "GET",
+			headers: {
+				'app_id': app_id,
+				'app_key': app_key
 			}
-		}
-		wait();
+		};
+		http.get(options, (resp) => {
+			let body = '';
+			resp.on('data', (d) => {
+				body += d;
+			});
+			resp.on('end', () => {
+				let parsed = JSON.stringify(body);
+				speechOutput += parsed;
+				console.log(parsed);
+			});
+		});
+
+
 		this.emit(':ask', speechOutput, speechOutput);
 	},
 	SpellingIntent: function () {
