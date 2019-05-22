@@ -1,4 +1,4 @@
-const http = require("https");
+const https = require("https");
 require('dotenv').config();
 const fs = require('fs');
 
@@ -70,31 +70,32 @@ const handlers = {
 		const app_id = process.env.OXFORD_DICTIONARIES_API_ID;
 		const app_key = process.env.OXFORD_DICTIONARIES_API_KEY;
 		const wordId = random_word;
-		const fields = "definitions";
-		const strictMatch = "false";
 
 		const options = {
 			host: 'od-api.oxforddictionaries.com',
 			port: '443',
-			path: '/api/v2/entries/en-us/' + wordId + '?fields=' + fields + '&strictMatch=' + strictMatch,
+			path: '/api/v1/entries/en/' + wordId,
 			method: "GET",
 			headers: {
 				'app_id': app_id,
 				'app_key': app_key
 			}
 		};
-		http.get(options, (resp) => {
+
+		https.get(options, (resp) => {
 			let body = '';
 			resp.on('data', (d) => {
 				body += d;
 			});
 			resp.on('end', () => {
-				let parsed = JSON.stringify(body);
-				speechOutput += parsed;
-				console.log(parsed);
+				let parsed_json = JSON.parse(body);
+				meaning = parsed_json['results'][0]['lexicalEntries'][0]['entries'][0]['senses'][0]['definitions'][0];
+				console.log(meaning);
+				speechOutput += ". ";
+				speechOutput += meaning;
+				speechOutput += ".";
 			});
 		});
-
 
 		this.emit(':ask', speechOutput, speechOutput);
 	},
